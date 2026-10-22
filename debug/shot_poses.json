@@ -1,0 +1,9 @@
+{
+ "_about": "Camera poses for debug/shot.tscn. The same poses render the pilot for side-by-side checks.",
+ "poses": [
+  {"name": "start", "x": 10, "z": 30, "yaw": 0.78, "pitch": 0.66, "distance": 84},
+  {"name": "overview", "x": 0, "z": 0, "yaw": 0.6, "pitch": 1.0, "distance": 205},
+  {"name": "brightwater", "x": 20, "z": 26, "yaw": 2.2, "pitch": 0.55, "distance": 45},
+  {"name": "mountain", "x": 12, "z": -40, "yaw": 0.2, "pitch": 0.4, "distance": 90}
+ ]
+}

@@ -4,7 +4,7 @@ Two milestones, then an art pass, then Version 2. **Milestone 1 rebuilds the pil
 
 Every phase ends the same way: the project opens from a clean checkout with no errors or warnings, all GUT tests pass headless, new tunables are in `data/`, the debug overlay covers the new system, rendered frames confirm it looks right, the docs are updated, the work is committed, and Alex gets a five-line summary, exactly how to try it, and known issues.
 
-**Current phase:** Phase 0 (update this line as phases are approved).
+**Current phase:** Phase 0, in progress (update this line as phases are approved). Prototype 0 is built: the pilot's island, sky, sea and the full camera, with tests. Still to build for Phase 0: the `SimClock`, `ActBus`, `SimRng`, `SaveSystem` and `Settings` autoloads, GUT, the spatial grid, the terrain cell model, the debug console and openblack's camera golden tests.
 
 ## Milestone 1: the toy, rebuilt in Godot (Phases 0–6)
 

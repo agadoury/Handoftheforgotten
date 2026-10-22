@@ -1,0 +1,16 @@
+{
+ "_about": "Keyboard bindings. Key names are Godot key names (OS.find_keycode_from_string). Mouse and trackpad gestures are handled by the camera rig.",
+ "camera_forward": ["W", "Up"],
+ "camera_back": ["S", "Down"],
+ "camera_left": ["A", "Left"],
+ "camera_right": ["D", "Right"],
+ "camera_rotate_left": ["Q"],
+ "camera_rotate_right": ["E"],
+ "camera_zoom_in": ["R", "Equal", "KP Add"],
+ "camera_zoom_out": ["F", "Minus", "KP Subtract"],
+ "camera_home": ["H"],
+ "toggle_debug": ["F3"],
+ "toggle_help": ["Slash"],
+ "align_kinder": ["BracketRight"],
+ "align_crueler": ["BracketLeft"]
+}

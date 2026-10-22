@@ -37,15 +37,21 @@ Read the docs a phase needs at its start rather than all of them every session.
 GODOT="/Applications/Godot.app/Contents/MacOS/Godot"   # if it isn't there, ask Alex once and update this line
 
 "$GODOT" --headless --path . --import                   # import assets and check the project loads
-"$GODOT" --headless --path . --quit                     # load once; script errors print to the terminal
-"$GODOT" --headless --path . -s addons/gut/gut_cmdln.gd -gdir=res://tests -gexit   # run all tests
+GODOT="$GODOT" tools/check.sh                           # no script errors or warnings, then all tests (headless)
+"$GODOT" --headless --path . -s res://tests/run_tests.gd   # just the tests (stand-in runner until GUT is installed)
 "$GODOT" --path .                                       # run the game
 
-# Look at the game yourself: render frames to PNG, then read them
-mkdir -p /tmp/hotf && "$GODOT" --path . --write-movie /tmp/hotf/frame.png --fixed-fps 30 --quit-after 120 res://debug/shot.tscn
+# Look at the game yourself: render poses to PNG, then read them
+"$GODOT" --path . --resolution 1280x720 res://debug/shot.tscn -- --out=/tmp/hotf [--poses=res://debug/shot_poses.json] [--align=-1] [--help-ui] [--debug-ui]
+# The pilot from the same poses, for side-by-side checks (cd tools/pilot && npm install, once)
+node tools/pilot/pilot.mjs shot /tmp/hotf
 ```
 
-Use rendered frames for every visual check (camera framing, a new mesh, a UI panel) before asking Alex to look. A small `debug/shot.tscn` that places the camera from command-line arguments makes this quick.
+Use rendered frames for every visual check (camera framing, a new mesh, a UI panel) before asking Alex to look, and compare with the pilot from the same poses.
+
+Headless Godot never prints GDScript warnings; `tools/check.sh` promotes them to errors for one run so they show.
+
+**Cloud sessions** (Linux container, no GitHub downloads): `sh tools/cloud_godot.sh` installs Godot 4.4.1 from Ubuntu's archive plus software Vulkan, and prints the `GODOT` path. Render frames there under `xvfb-run -a -s "-screen 0 1280x720x24"`. Stick to features Godot 4.4 has.
 
 ## How we work
 

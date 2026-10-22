@@ -10,3 +10,7 @@ reference/openblack/
 
 # macOS
 .DS_Store
+
+# Local tooling
+override.cfg
+tools/pilot/node_modules/
