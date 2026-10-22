@@ -1,0 +1,266 @@
+{
+  "_about": "Every tuning value from the playable pilot (docs/pilot/index.html, version 7, Oct 2026). Units: distances in metres (1 pilot unit = 1 m), times in seconds, rates per second unless named otherwise, opinions and needs 0-1, belief 0-100, alignment -1 (cruel) to +1 (kind). Seed data/ from this file, then tune in Godot. Where the pilot ran its village sim once per second, the Godot SimClock runs at 10 Hz: divide per-tick amounts accordingly.",
+
+  "world": {
+    "terrain_size_m": 320,
+    "island_radius_m": [64, 108],
+    "_island_note": "Domain-warped fbm island; land fades between 64 and 108 m from centre. Mountain peak about 30 m high. Keep this small scale for Milestone 1; every distance below was tuned against it.",
+    "mountain": { "x": 12, "z": -58, "height_m": 30, "sigma_m": 17 },
+    "stone_circle": { "x": -2, "z": 46, "flatten_radius_m": 11 },
+    "trees_max": 170,
+    "rocks_scattered": 30,
+    "fields": [
+      { "x": 6, "z": 6, "w": 13, "d": 9, "village": "brightwater" },
+      { "x": 44, "z": 16, "w": 11, "d": 11, "village": "brightwater" },
+      { "x": -30, "z": -40, "w": 11, "d": 9, "village": "cairnhold" }
+    ],
+    "gravity_m_s2": 26,
+    "_gravity_note": "Higher than real gravity on purpose: throws feel snappy at this scale. openblack uses 10."
+  },
+
+  "villages": {
+    "start": [
+      { "id": "brightwater", "x": 20, "z": 26, "radius_m": 17, "owned": true, "belief": 72, "food": 26, "wood": 5, "houses": 4, "villagers": ["farmer", "farmer", "farmer", "priest", "priest", "folk", "folk", "folk", "folk", "folk"] },
+      { "id": "cairnhold", "x": -50, "z": -16, "radius_m": 15, "owned": false, "belief": 0, "food": 18, "wood": 3, "houses": 3, "villagers": ["farmer", "farmer", "folk", "folk", "folk", "folk", "folk"], "starting_buildings": ["granary"] }
+    ],
+    "house_slots": 8,
+    "house_ring_fraction_of_radius": 0.72,
+    "store_offset_m": 6.2,
+    "store_drop_radius_m": 5.2,
+    "food_eaten_per_villager_per_s": 0.025,
+    "hungry_below_food": 5,
+    "starvation_death_every_s": 50,
+    "birth_interval_s": 34,
+    "birth_min_food": 18,
+    "birth_min_adults": 2,
+    "birth_food_cost": 3,
+    "child_grow_time_s": 90,
+    "house_cost_wood": 12,
+    "house_built_when": "wood >= cost and population >= capacity - 1 and no building under construction",
+    "max_villagers_island": 72,
+    "villager_speed_m_s": 2.6,
+    "child_speed_m_s": 1.9,
+    "flee_speed_m_s": 5.2,
+    "flee_radius_from_death_m": 14,
+    "field_ripen_per_s": 1,
+    "field_ripen_per_tending_farmer_per_s": 0.9,
+    "field_sheaf_at_ripeness": 16,
+    "field_max_sheaves": 4,
+    "farmer_fetch_radius_beyond_village_m": 12
+  },
+
+  "items": {
+    "sheaf_food": 3,
+    "basket_food": 12,
+    "uprooted_tree_wood": 6,
+    "radius_m": { "rock": 1.0, "sheaf": 0.85, "basket": 1.0, "tree": 1.4, "fireball": 1.0 },
+    "bounce_if_speed_above": 4.5,
+    "max_bounces": 2,
+    "crush_villagers_if_speed_above": 13
+  },
+
+  "hand_and_camera": {
+    "hold_to_grab_ms_touch": 280,
+    "pick_radius_px": { "mouse": 20, "touch": 34 },
+    "throw_min_speed_m_s": 9,
+    "throw_vertical": "min(26, speed * 0.32 + 5)",
+    "throw_horizontal_scale": "min(1.25, 95 / speed) * 1.1",
+    "throw_velocity_window_ms": 140,
+    "villager_dies_if_landing_speed_above": { "thrown": 17, "dropped": 32 },
+    "hand_scale": "clamp(camera_distance * 0.02, 1, 3.8)",
+    "hand_lift": "1.8 * scale (mouse), plus 4.2 * scale on touch so the finger does not hide it",
+    "hand_hides_after_touch_release_s": 0.6,
+    "pan_drag_cap": "camera_distance * 0.6 per move event",
+    "pan_fling_max_m_s": 160,
+    "pan_fling_decay_per_s": 3.6,
+    "pitch_rad": [0.32, 1.36],
+    "distance_m": [20, 210],
+    "target_radius_from_centre_m": 110,
+    "start": { "target": [10, 30], "yaw": 0.78, "pitch": 0.66, "distance": 84 },
+    "fly_to_duration_s": 0.95,
+    "fly_to_zoom_factor": 0.7,
+    "two_finger_tap_zoom_out_factor": 1.45,
+    "tree_sway_radius_m": 10,
+    "tree_sway_max_rad": 0.45,
+    "zoom_curve": "openblack ZoomInterpolator: f(t) = m0*t + (6-3*m0-3*m1)*t^2 + (3*m0+5*m1-8)*t^3 + (3-m0-2*m1)*t^4"
+  },
+
+  "belief": {
+    "conversion_at": 100,
+    "witness_radius_m": 50,
+    "witness_falloff": "base * novelty * (1 - d / 50 * 0.5)",
+    "owned_village_multiplier": 0.35,
+    "novelty_kinds": ["throw", "miracle", "fire"],
+    "novelty_drop_per_use": 0.18,
+    "novelty_floor": 0.2,
+    "novelty_recovery_per_s": 0.035,
+    "witness_base": {
+      "harvest_miracle": 5,
+      "fireball_explosion": 7,
+      "thrown_object_first_bounce": 1.8,
+      "object_splashes_in_sea": 1.2,
+      "villager_picked_up": 0.4,
+      "villager_thrown": 0.6,
+      "earthshaker_landing": 3,
+      "shepherd_delivery": 4
+    },
+    "gift_belief": { "owned": 3, "neutral": 8, "basket_multiplier": 1.4 },
+    "owned_drift_per_s": { "fed": 0.06, "hungry": -0.1 },
+    "neutral_drift_per_s": -0.02,
+    "villager_killed": { "owned": -7, "neutral": -10 },
+    "villager_eaten_by_creature": { "owned": -9, "neutral": -12 },
+    "big_gain_shows_faith_motes_at": 1.2
+  },
+
+  "prayer": {
+    "max_power": 100,
+    "start_power": 40,
+    "worshipper_power_per_s": 0.55,
+    "worshippers_wanted": "clamp(floor(home_belief / 22), 1, 4)",
+    "priest_goes_to_worship_chance": 1.0,
+    "folk_goes_to_worship_chance": 0.35,
+    "worship_session_s": [22, 34],
+    "second_owned_village_power_per_s": 0.35
+  },
+
+  "miracles": {
+    "harvest": { "cost": 25, "spawns": "basket (12 food)", "witness": 5, "alignment": 0.02 },
+    "fireball": { "cost": 35, "kill_radius_m": 7, "burn_trees_radius_m": 8, "destroy_food_radius_m": 6, "wreck_buildings_radius": "6 + building radius", "witness": 7, "alignment_on_cast": -0.02, "alignment_on_impact": -0.04, "tree_burns_away_after_s": 14 },
+    "casting": "Drag the orb from the altar into the world and let go. Dropping back on the altar cancels at no cost."
+  },
+
+  "alignment": {
+    "player_kills_villager": -0.07,
+    "player_throws_villager": -0.02,
+    "player_gives_food": 0.04,
+    "creature_gives_food": 0.02,
+    "creature_eats_villager_player": -0.02,
+    "creature_eats_villager_creature": -0.12,
+    "creature_delivers_food_creature": 0.04,
+    "words": [[0.5, "Angelic"], [0.18, "Kind"], [-0.18, "Torn"], [-0.5, "Cruel"], [-1, "Devilish"]],
+    "sky_blend_to_evil_max": 0.85
+  },
+
+  "creature": {
+    "start": { "x": 2, "z": 36, "hunger": 0.45, "play": 0.3, "tired": 0.15, "align": 0 },
+    "home": { "x": 4, "z": 34, "wander_back_if_farther_than_m": 55 },
+    "visual_scale": 1.15,
+    "height_m_at_level_1": 12,
+    "reach_m": 6.2,
+    "walk_speed_m_s": 6.4,
+    "turn_rate_rad_s": 2.4,
+    "needs_per_s": { "hunger": 0.0075, "play": 0.006, "tired": 0.0032 },
+    "meal_hunger_relief": { "sheaf": 0.42, "basket": 0.75, "villager": 0.6, "tree": 0.25, "rock": 0.05 },
+    "rest_when_tired_above": 0.55,
+    "rest_score": "(tired - 0.4) * 1.5",
+    "rest_duration_s": 9,
+    "opinions_start": { "eat_food": 0.55, "eat_villager": 0.42, "eat_tree": 0.35, "eat_rock": 0.3, "feed_village": 0.3, "throw_rock": 0.45 },
+    "opinion_range": [0.02, 0.98],
+    "proximity": "1 / (1 + d / 26)",
+    "decision_scores": {
+      "eat_food": "hunger * op.eat_food * prox(d) * 1.1   (food within 70 m)",
+      "feed_village": "0.55 * op.feed_village * prox(d) * need   (need 1.25 if that store has < 30 food, else 0.55)",
+      "eat_villager": "hunger * op.eat_villager * prox(d)   (villager within 55 m, not fleeing)",
+      "eat_tree": "hunger * op.eat_tree * prox(d) * 0.8   (within 45 m)",
+      "eat_rock": "hunger * op.eat_rock * prox(d) * 0.5   (within 40 m)",
+      "throw_rock": "play * op.throw_rock * prox(d)   (within 40 m)",
+      "eat_from_trough": "(hunger + 0.2) * max(0.45, op.eat_food) * prox(d * 0.35) * 1.2   (within 150 m)",
+      "rest": "only when tired > 0.55",
+      "wander": "0.1",
+      "noise": "uniform 0 to 0.05 added to each"
+    },
+    "pause_between_decisions_s": { "after_learnable_action": [2, 3], "otherwise": [0.6, 1.4] },
+    "give_up_after_s": { "fetch": 20, "deliver": 45, "chase_villager": 9, "chase_villager_with_hunter": 25 },
+    "eating_rock_halves_eat_rock_opinion": true
+  },
+
+  "teaching": {
+    "learning_rate": "0.5 * strength",
+    "reward_update": "o + lr * (1 - o)",
+    "punish_update": "o - lr * o",
+    "button_strength": 0.8,
+    "credit_rule": "Credit the current action if it is past its first 2.5 s or past the approach phase; otherwise credit the action finished in the last 4.5 s; otherwise the one finished in the last 8 s; otherwise nothing ('What did I do?').",
+    "punishing_the_current_action_aborts_it": true,
+    "stroke_gesture": "on the creature: at least 2 horizontal direction reversals, 130 px of path since the last stroke, peak speed under 2.1 px/ms; strength clamp(path / 420, 0.5, 1)",
+    "slap_gesture": "on the creature: released within 450 ms, path over 45 px, average speed over 1.3 px/ms; strength clamp(speed / 3, 0.55, 1)",
+    "tap_creature_opens_mind": "path under 14 px and under 500 ms",
+    "observation": {
+      "player_kills_villager_within_60m": ["eat_villager", 0.06],
+      "player_feeds_village_within_60m": ["feed_village", 0.1],
+      "player_uproots_tree_within_50m": ["eat_tree", 0.02],
+      "player_throws_rock_within_50m": ["throw_rock", 0.04],
+      "update": "o + amount * (1 - o)"
+    },
+    "trough_meal": { "feed_village": "+0.06 * (1 - o)", "eat_villager": "* 0.93", "bonus_xp": 12 }
+  },
+
+  "creature_growth": {
+    "max_level": 10,
+    "xp_to_next_level": "30 + 20 * level",
+    "talent_points_per_level": 1,
+    "size_per_level": 0.035,
+    "xp": { "feed_village": 30, "eat_villager": 15, "eat_food": 10, "throw_rock": 10, "eat_tree": 6, "eat_rock": 2, "stroke_or_slap_credited": 5, "observation": 3 },
+    "measured_pace": "level 3 at about 1 minute, level 10 at about 9 minutes of active play (headless sim, kind play)",
+    "talents": {
+      "gentle": { "branch": "grove", "tier": 1, "effect": "food it delivers gives 50% more belief" },
+      "green": { "branch": "grove", "tier": 2, "effect": "fields within 20 m of it ripen twice as fast" },
+      "shepherd": { "branch": "grove", "tier": 3, "effect": "each delivery is witnessed like a miracle (base 4)" },
+      "herald": { "branch": "grove", "tier": 4, "requires_creature_align_at_least": 0.3, "effect": "+0.45 prayer per s while within 25 m of the stone circle or 28 m of an owned village" },
+      "hearty": { "branch": "body", "tier": 1, "effect": "hunger grows 35% slower" },
+      "stride": { "branch": "body", "tier": 2, "effect": "walks 25% faster" },
+      "quick": { "branch": "body", "tier": 3, "effect": "all learning amounts x1.5" },
+      "colossus": { "branch": "body", "tier": 4, "effect": "size x1.15 and every deed counts x1.5 for belief" },
+      "dread": { "branch": "ember", "tier": 1, "effect": "when it eats a villager, neutral villages within 70 m gain 6 belief (fear)" },
+      "hunter": { "branch": "ember", "tier": 2, "effect": "chases 35% faster and gives up after 25 s instead of 9" },
+      "earthshaker": { "branch": "ember", "tier": 3, "effect": "throws 1.6x as far; each landing is witnessed (base 3)" },
+      "tyrant": { "branch": "ember", "tier": 4, "requires_creature_align_at_most": -0.3, "effect": "neutral villages within 45 m gain 0.25 belief per s; owned ones lose 0.05 per s" }
+    },
+    "forms": {
+      "rule": "The branch with the most talents names it; a tie names it Wildling; no talents is Young Beast.",
+      "grove": ["Grovekin (1-2)", "Grove Warden (3)", "Grove Herald (4)"],
+      "body": ["Stonekin (1-2)", "Stone Titan (3)", "Stone Colossus (4)"],
+      "ember": ["Emberkin (1-2)", "Ember Fiend (3)", "Ember Tyrant (4)"]
+    }
+  },
+
+  "city": {
+    "tiers": [
+      { "name": "Hamlet", "building_plots": 2, "people_per_house": 3 },
+      { "name": "Village", "building_plots": 4, "people_per_house": 4, "needs_people": 12, "needs_buildings": 2 },
+      { "name": "Town", "building_plots": 6, "people_per_house": 5, "needs_people": 20, "needs_buildings": 4, "needs_temple": true }
+    ],
+    "only_owned_villages_grow_or_plan": true,
+    "tier_up_belief": 6,
+    "plots": "Up to 6 per village, in a ring at radius + 1 m between house slots, skipping spots within 5.5 m of a field, 13 m of the stone circle, or with more than 3.2 m of height difference across 3.6 m.",
+    "one_building_under_construction_at_a_time": true,
+    "builders_max": 3,
+    "builder_wood_per_s": 0.35,
+    "builder_walk_speed_multiplier": 1.35,
+    "completion_belief": 4,
+    "fire_damage": "a finished building becomes a ruin at 50% of its wood cost that villagers rebuild; a scaffold loses 40% of its progress; belief -6 owned, -3 neutral",
+    "lodge_cost_discount": 0.75,
+    "lodge_house_cost_wood": 9,
+    "buildings": {
+      "lodge": { "name": "Woodcutter's Lodge", "cost": 8, "tier": 0, "radius_m": 3.2, "effect": "every 20 s, if the store has under 40 wood, sends a woodcutter to the nearest tree within 55 m: 4 s to fell it, +4 wood at the store; the tree regrows after 150 s", "drop": "a tree gives 9 wood instead of 6" },
+      "granary": { "name": "Granary", "cost": 10, "tier": 0, "radius_m": 3.0, "effect": "village eats 30% less", "drop": "food is worth 1.5x" },
+      "nursery": { "name": "Nursery", "cost": 10, "tier": 0, "radius_m": 3.2, "effect": "births twice as often", "drop": "food triggers a birth at once if there is a free bed" },
+      "temple": { "name": "Temple", "cost": 14, "tier": 0, "radius_m": 3.4, "effect": "+0.3 prayer per s, +0.03 belief per s, +0.25 prayer per s per kneeling priest", "drop": "a villager becomes a priest (max 3)" },
+      "tower": { "name": "Watchtower", "cost": 12, "tier": 1, "radius_m": 2.4, "effect": "neutral villages within 130 m gain 0.05 belief per s; its villagers flee the creature from 22 m instead of 12 m", "drop": "a villager walks to the nearest neutral village, preaches 40 s at +0.45 belief per s, then settles there" },
+      "pen": { "name": "Creature Pen", "cost": 16, "tier": 1, "radius_m": 3.6, "effect": "within village radius + 18 m the creature's hunger and tiredness grow at 0.6x and it earns 1.25x XP", "drop": "food goes in the trough and calls the creature (see teaching.trough_meal)" },
+      "wonder": { "name": "Sun Spire or Ember Spire (by player alignment when finished)", "cost": 30, "tier": 2, "radius_m": 3.4, "effect": "+1 prayer per s; every village +0.05 belief per s if owned, +0.15 if not", "drop": null }
+    }
+  },
+
+  "tutorial_goals": [
+    "Drag the land to look around",
+    "Pick up a rock and throw it",
+    "Drag the wheat orb out to cast Harvest",
+    "Drop food on Brightwater's storehouse",
+    "Have Brightwater build something",
+    "Tap your creature to read its mind",
+    "Teach it: slap cruelty, stroke kindness",
+    "Let your creature feed a village on its own",
+    "Grow Brightwater into a Village",
+    "Win over Cairnhold, the hill village"
+  ]
+}

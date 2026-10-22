@@ -1,0 +1,12 @@
+# Godot 4
+.godot/
+/android/
+*.translation
+export_presets.cfg
+/export/
+
+# openblack is a local reference only (GPL v3 source, never committed or shipped)
+reference/openblack/
+
+# macOS
+.DS_Store
